@@ -1,0 +1,30 @@
+
+#CREATE DECISION TREE (CLASSIFICATION) FOR POLICE DATA
+
+library(rpart)
+
+fit <- rpart(homType ~ Neighbourhood + occDate + occYear+ Division, method ="class", data=TPSdf)
+
+printcp(fit)
+
+plotcp(fit)
+
+summary(fit)
+
+#Plot tree
+plot(fit, uniform=TRUE, main="Classification Tree for TPS Homicide Data")
+text(fit, use.n=TRUE, all=TRUE, cex=.8)
+
+post(fit, file="c:/tree.ps", title="Classification Tree for TPS Homicide Data")
+
+
+#pruning tree
+pfit <- prune(fit)
+plot(pfit, uniform = TRUE, main="Pruned Classification Tree for TPS Homicide Data")
+text(pfit, use.n=TRUE, all=TRUE, cex=.8)
+post(pfit, file="c:/ptree.ps",title="Pruned Classification Tree for TPS Homicide Data")
+
+
+#Logistic Regression
+logitTPS <- glm(homType ~ Neighbourhood + occDate + occYear+ Division, data=TPSdf, family="binomial" )
+summary(logitTPS)
